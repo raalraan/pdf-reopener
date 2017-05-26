@@ -1,6 +1,6 @@
 function roz {
 case $1 in
-  catch | c)
+  save | s)
     ALL=$(ls -l /proc/*/fd 2>/dev/null)
     PDFS=$(echo "$ALL" | grep .pdf$)
     OCMD=$(echo "$PDFS" | sed -e 's/^.*-> /xdg-open "/g'\
@@ -24,7 +24,7 @@ case $1 in
         echo "will execute rz-default"
 	  else
 		echo "There is no default session saved. You can save a default session"
-		echo "with the argument 'catch' or 'c' alone and then opening with the"
+		echo "with the argument 'save' or 's' alone and then opening with the"
 		echo "argument 'open' or 'o' alone."
 	  fi
     fi
@@ -61,13 +61,13 @@ case $1 in
 
   *)
   	echo "Use one of the following"
-	echo "c, catch       save a session"
+	echo "s, save        save a session"
 	echo "o, open        open a saved session"
 	echo "ls, list       show information about saved sessions"
 	echo "mv, move 'name' 'new name'    rename a session"
 	echo "rm, remove 'name'    remove session matching session name"
-	echo "\nYou can give a name to the session by issuing the catch command with a name"
-	echo "        roz c my-session"
+	echo "\nYou can give a name to the session by issuing the save command with a name"
+	echo "        roz s my-session"
 	echo "and later reopening it with the open command plus the name"
 	echo "        roz o my-session"
   	;;
