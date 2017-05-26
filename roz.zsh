@@ -51,7 +51,7 @@ case $1 in
     fi
     ;;
 
-  last)
+  last | la)
 	if [[ $(ls "$ROZDIR/.last-$LAST" 2>/dev/null) ]]; then
 	  LSTSES=$(cat "$ROZDIR/.last-$LAST")
 	  if [[ $(ls "$ROZDIR/rz-$LSTSES" 2>/dev/null) ]]; then
@@ -105,11 +105,11 @@ case $1 in
   	echo "Use one of the following"
 	echo "s, save        save a session"
 	echo "o, open        open a saved session"
-	echo "last           open the most recently saved/opened session"
+	echo "la, last       open the most recently saved/opened session"
 	echo "ls, list       show information about saved sessions"
 	echo "mv, move 'name' 'new name'    rename a session"
 	echo "rm, remove 'name'    remove session matching session name"
-	echo "\nYou can give a name to the session by issuing the save command with a name"
+	echo "\nYou can name the session by issuing the save command with the name"
 	echo "        roz s my-session"
 	echo "and later reopening it with the open command plus the name"
 	echo "        roz o my-session"
