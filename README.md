@@ -17,6 +17,19 @@ This script creates a zsh function, named `roz`, that uses the content of
 creates a script that can be executed later with `roz open`. You can create
 sessions, list them, remove them and rename them.
 
+### Installation
+
+Save the script `roz.zsh`, for example in `~/.zsh/`, and source it in your `.zshrc`
+
+	source /path/to/roz.zsh
+
+Then create the directory `~/.rz-sessions`
+
+	mkdir ~/.rz-sessions
+
+You can use a different directory, just change the variable `ROZDIR` to use
+the directory of your choice.
+
 ### Usage
 
 If you issue the command `roz` without arguments you will see some usage
