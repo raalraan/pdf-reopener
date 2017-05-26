@@ -5,14 +5,15 @@ function roz {
 	# 'saved': 'last' command opens last session saved by roz save/s
 	# 'any': 'last' command opens last session saved or opened
 	local LAST=any
+	local PDFVIEW=zathura
 
 case $1 in
   save | s)
     local ALL=$(ls -l /proc/*/fd 2>/dev/null)
     local PDFS=$(echo "$ALL" | grep .pdf$)
-    local OCMD=$(echo "$PDFS" | sed -e 's/^.*-> /xdg-open "/g'\
-      -e 's/$/"\>\/dev\/null 2\>\/dev\/null \&/g')
 	if [[ $PDFS ]]; then
+      local OCMD=$(echo "$PDFS" | sed -e "s/^.*-> /$PDFVIEW \"/g"\
+        -e 's/$/"\>\/dev\/null 2\>\/dev\/null \&/g')
       if [[ $2 ]]; then
         echo "$OCMD" > $ROZDIR/rz-$2
 		echo "$2" > $ROZDIR/.last-saved
@@ -38,6 +39,7 @@ case $1 in
 	  else
 		echo "session \"$2\" was not found"
 	  fi
+
     else
 	  if [[ $(ls $ROZDIR/rz-default 2>/dev/null) ]]; then
         "$ROZDIR/rz-default"
