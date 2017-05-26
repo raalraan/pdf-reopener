@@ -1,28 +1,43 @@
 function roz {
 	local ROZDIR=~/.rz-sessions
+
 case $1 in
   save | s)
     local ALL=$(ls -l /proc/*/fd 2>/dev/null)
     local PDFS=$(echo "$ALL" | grep .pdf$)
     local OCMD=$(echo "$PDFS" | sed -e 's/^.*-> /xdg-open "/g'\
       -e 's/$/"\>\/dev\/null 2\>\/dev\/null \&/g')
-    if [[ $2 ]]; then
-      echo "$OCMD\nto $ROZDIR/rz-$2"
-    else
-      echo "$OCMD\nto $ROZDIR/rz-default"
-    fi
+	if [[ $PDFS ]]; then
+      if [[ $2 ]]; then
+        echo "$OCMD" > $ROZDIR/rz-$2
+		echo "$2" > $ROZDIR/last-saved
+		echo "$2" > $ROZDIR/last-any
+	    chmod +x $ROZDIR/rz-$2
+      else
+        echo "$OCMD" > $ROZDIR/rz-default
+		echo "default" > $ROZDIR/last-saved
+		echo "default" > $ROZDIR/last-any
+	    chmod +x $ROZDIR/rz-default
+      fi
+	else
+	  echo "Sorry, I could not find any open PDF file"
+	fi
     ;;
 
   open | o)
     if [[ $2 ]]; then
 	  if [[ $(ls $ROZDIR/rz-$2 2>/dev/null) ]]; then
-        echo "will execute rz-$2"
+        "$ROZDIR/rz-$2"
+		echo "$2" > $ROZDIR/last-opened
+		echo "$2" > $ROZDIR/last-any
 	  else
 		echo "session \"$2\" was not found"
 	  fi
     else
 	  if [[ $(ls $ROZDIR/rz-default 2>/dev/null) ]]; then
-        echo "will execute rz-default"
+        "$ROZDIR/rz-default"
+		echo "default" > $ROZDIR/last-opened
+		echo "default" > $ROZDIR/last-any
 	  else
 		echo "there is no default session saved. you can save a default session"
 		echo "with the argument 'save' or 's' alone and then opening with the"
@@ -37,8 +52,8 @@ case $1 in
 
   move | mv)
     if [[ $2 && $3 ]]; then
-	  if [[ $(ls $ROZDIR/rz-$2 2>/dev/null) ]]; then
-	    echo "will rename session $2 to $3: mv $ROZDIR/rz-$2 $ROZDIR/rz-$3"
+	  if [[ $(ls "$ROZDIR/rz-$2" 2>/dev/null) ]]; then
+	    mv "$ROZDIR/rz-$2" "$ROZDIR/rz-$3"
 	  else
 		echo "session \"$2\" was not found"
 	  fi
@@ -50,8 +65,8 @@ case $1 in
 
   remove | rm)
     if [[ $2 ]]; then
-	  if [[ $(ls $ROZDIR/rz-$2 2>/dev/null) ]]; then
-	    echo "will remove session $2: rm $ROZDIR/rz-$2"
+	  if [[ $(ls "$ROZDIR/rz-$2" 2>/dev/null) ]]; then
+	    rm "$ROZDIR/rz-$2"
 	  else
 		echo "Session \"$2\" was not found"
 	  fi
