@@ -5,7 +5,7 @@ function roz {
 	# 'saved': 'last' command opens last session saved by roz save/s
 	# 'any': 'last' command opens last session saved or opened
 	local LAST=any
-	local PDFVIEW=zathura
+	local PDFVIEW=xdg-open
 
 case $1 in
   save | s)
